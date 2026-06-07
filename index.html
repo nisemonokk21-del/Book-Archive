@@ -24,7 +24,6 @@
     --mono: 'DM Mono', monospace;
     --sans: 'DM Sans', sans-serif;
     --radius: 16px;
-    --radius-sm: 10px;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -38,9 +37,8 @@
     margin: 0 auto;
   }
 
-  /* HEADER */
   .header {
-    padding: 56px 24px 24px;
+    padding: 56px 24px 20px;
     background: var(--surface);
     border-bottom: 1px solid var(--border);
     position: sticky;
@@ -50,9 +48,9 @@
 
   .header-top {
     display: flex;
-    align-items: baseline;
+    align-items: center;
     justify-content: space-between;
-    margin-bottom: 4px;
+    margin-bottom: 8px;
   }
 
   .app-name {
@@ -64,22 +62,45 @@
     text-transform: uppercase;
   }
 
-  .today-date {
+  /* DATE PICKER IN HEADER */
+  .date-picker-wrap {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 99px;
+    padding: 4px 12px;
+    cursor: pointer;
+  }
+
+  .date-picker-wrap input[type=date] {
     font-family: var(--mono);
-    font-size: 11px;
-    color: var(--muted);
+    font-size: 12px;
+    color: var(--text);
+    border: none;
+    background: transparent;
+    outline: none;
+    cursor: pointer;
+    width: 110px;
+  }
+
+  .date-picker-wrap input[type=date]::-webkit-calendar-picker-indicator {
+    opacity: 0.4;
+    cursor: pointer;
+    width: 14px;
   }
 
   .score-display {
     display: flex;
     align-items: flex-end;
     gap: 8px;
-    margin-top: 8px;
+    margin-top: 4px;
   }
 
   .score-number {
     font-family: var(--mono);
-    font-size: 64px;
+    font-size: 60px;
     font-weight: 300;
     line-height: 1;
     color: var(--text);
@@ -89,12 +110,11 @@
   .score-label {
     font-size: 13px;
     color: var(--muted);
-    margin-bottom: 10px;
-    font-weight: 400;
+    margin-bottom: 8px;
   }
 
   .score-bar-wrap {
-    margin-top: 12px;
+    margin-top: 10px;
     height: 4px;
     background: var(--border);
     border-radius: 99px;
@@ -111,11 +131,8 @@
   .score-bar.warn { background: linear-gradient(90deg, #f4a261, var(--warn)); }
   .score-bar.bad { background: linear-gradient(90deg, #e07a5f, #c1440e); }
 
-  /* TABS */
   .tabs {
     display: flex;
-    padding: 0 24px;
-    gap: 0;
     background: var(--surface);
     border-bottom: 1px solid var(--border);
   }
@@ -134,20 +151,12 @@
     user-select: none;
   }
 
-  .tab.active {
-    color: var(--accent);
-    border-bottom-color: var(--accent);
-  }
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
 
-  /* CONTENT */
-  .content {
-    padding: 20px 16px 100px;
-  }
-
+  .content { padding: 20px 16px 100px; }
   .tab-panel { display: none; }
   .tab-panel.active { display: block; }
 
-  /* SECTION */
   .section {
     background: var(--surface);
     border-radius: var(--radius);
@@ -157,18 +166,15 @@
   }
 
   .section-header {
-    padding: 16px 20px 12px;
+    padding: 14px 20px 12px;
     border-bottom: 1px solid var(--border);
     display: flex;
     align-items: center;
-    gap: 8px;
+    justify-content: space-between;
   }
 
-  .section-icon {
-    font-size: 16px;
-    line-height: 1;
-  }
-
+  .section-header-left { display: flex; align-items: center; gap: 8px; }
+  .section-icon { font-size: 16px; line-height: 1; }
   .section-title {
     font-size: 12px;
     font-weight: 600;
@@ -179,7 +185,6 @@
 
   .section-body { padding: 16px 20px; }
 
-  /* TIME INPUT ROW */
   .time-row {
     display: flex;
     align-items: center;
@@ -190,23 +195,12 @@
 
   .time-row:last-child { border-bottom: none; }
 
-  .time-label {
-    font-size: 14px;
-    font-weight: 400;
-    color: var(--text);
-    flex: 1;
-  }
-
-  .time-sub {
-    font-size: 11px;
-    color: var(--muted);
-    margin-top: 2px;
-  }
+  .time-label { font-size: 14px; font-weight: 400; color: var(--text); flex: 1; }
+  .time-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
 
   .time-input {
     font-family: var(--mono);
     font-size: 18px;
-    font-weight: 400;
     color: var(--text);
     border: none;
     background: transparent;
@@ -219,7 +213,6 @@
   .time-input::-webkit-calendar-picker-indicator { display: none; }
   .time-input:focus { color: var(--accent); }
 
-  /* TOGGLE ROW */
   .toggle-row {
     display: flex;
     align-items: center;
@@ -229,13 +222,11 @@
   }
 
   .toggle-row:last-child { border-bottom: none; }
-
   .toggle-label { font-size: 14px; }
   .toggle-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
 
   .toggle {
-    width: 44px;
-    height: 26px;
+    width: 44px; height: 26px;
     background: var(--border);
     border-radius: 99px;
     position: relative;
@@ -249,19 +240,16 @@
   .toggle::after {
     content: '';
     position: absolute;
-    width: 20px;
-    height: 20px;
+    width: 20px; height: 20px;
     background: white;
     border-radius: 50%;
-    top: 3px;
-    left: 3px;
+    top: 3px; left: 3px;
     transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
     box-shadow: 0 1px 4px rgba(0,0,0,0.15);
   }
 
   .toggle.on::after { transform: translateX(18px); }
 
-  /* SELECT */
   .select-grid {
     display: flex;
     flex-wrap: wrap;
@@ -274,11 +262,13 @@
     border-radius: 99px;
     border: 1.5px solid var(--border);
     font-size: 13px;
-    font-weight: 400;
     color: var(--muted);
     cursor: pointer;
     transition: all 0.15s;
     user-select: none;
+    display: flex;
+    align-items: center;
+    gap: 4px;
   }
 
   .select-chip.selected {
@@ -294,7 +284,70 @@
     color: var(--warn);
   }
 
-  /* SLIDER */
+  /* ADD CUSTOM ACTIVITY */
+  .add-activity-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+    align-items: center;
+  }
+
+  .add-activity-input {
+    flex: 1;
+    font-family: var(--sans);
+    font-size: 13px;
+    color: var(--text);
+    border: 1.5px solid var(--border);
+    background: var(--bg);
+    border-radius: 99px;
+    padding: 6px 14px;
+    outline: none;
+  }
+
+  .add-activity-input:focus { border-color: var(--accent); }
+  .add-activity-input::placeholder { color: var(--muted); }
+
+  .add-activity-type {
+    font-size: 11px;
+    padding: 6px 10px;
+    border-radius: 99px;
+    border: 1.5px solid var(--border);
+    background: var(--bg);
+    color: var(--muted);
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+  }
+
+  .add-activity-type.bad-type {
+    border-color: var(--warn);
+    background: var(--warn-light);
+    color: var(--warn);
+  }
+
+  .add-activity-btn {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: white;
+    border: none;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  .chip-delete {
+    font-size: 10px;
+    color: var(--muted);
+    margin-left: 2px;
+    opacity: 0.6;
+  }
+
   .slider-row {
     padding: 8px 0;
     border-bottom: 1px solid var(--border);
@@ -314,7 +367,6 @@
   .slider-value {
     font-family: var(--mono);
     font-size: 18px;
-    font-weight: 400;
     color: var(--accent);
     min-width: 24px;
     text-align: right;
@@ -331,18 +383,13 @@
 
   input[type=range]::-webkit-slider-thumb {
     -webkit-appearance: none;
-    width: 20px;
-    height: 20px;
+    width: 20px; height: 20px;
     background: var(--accent);
     border-radius: 50%;
     cursor: pointer;
     box-shadow: 0 2px 6px rgba(45,106,79,0.3);
-    transition: transform 0.1s;
   }
 
-  input[type=range]:active::-webkit-slider-thumb { transform: scale(1.2); }
-
-  /* EMOJI SCALE */
   .emoji-scale {
     display: flex;
     justify-content: space-between;
@@ -355,15 +402,10 @@
     opacity: 0.3;
     transition: all 0.15s;
     user-select: none;
-    transform: scale(1);
   }
 
-  .emoji-btn.selected {
-    opacity: 1;
-    transform: scale(1.3);
-  }
+  .emoji-btn.selected { opacity: 1; transform: scale(1.3); }
 
-  /* TEXT AREA */
   .note-input {
     width: 100%;
     border: none;
@@ -379,7 +421,6 @@
 
   .note-input::placeholder { color: var(--muted); }
 
-  /* SAVE BUTTON */
   .save-btn {
     position: fixed;
     bottom: 24px;
@@ -405,7 +446,6 @@
   .save-btn:active { transform: translateX(-50%) scale(0.98); }
   .save-btn.saved { background: var(--accent); }
 
-  /* HISTORY */
   .history-empty {
     text-align: center;
     padding: 60px 20px;
@@ -420,11 +460,7 @@
     border-radius: var(--radius);
     padding: 16px 20px;
     margin-bottom: 10px;
-    cursor: pointer;
-    transition: all 0.15s;
   }
-
-  .history-card:active { transform: scale(0.99); }
 
   .history-top {
     display: flex;
@@ -433,29 +469,14 @@
     margin-bottom: 10px;
   }
 
-  .history-date {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--muted);
-    letter-spacing: 0.05em;
-  }
+  .history-date { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: 0.05em; }
 
-  .history-score {
-    font-family: var(--mono);
-    font-size: 28px;
-    font-weight: 300;
-    line-height: 1;
-  }
-
+  .history-score { font-family: var(--mono); font-size: 28px; font-weight: 300; line-height: 1; }
   .history-score.good { color: var(--accent); }
   .history-score.ok { color: #f4a261; }
   .history-score.bad { color: var(--warn); }
 
-  .history-pills {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-  }
+  .history-pills { display: flex; flex-wrap: wrap; gap: 6px; }
 
   .history-pill {
     font-size: 11px;
@@ -466,17 +487,9 @@
     font-family: var(--mono);
   }
 
-  .history-pill.red {
-    background: var(--warn-light);
-    color: var(--warn);
-  }
+  .history-pill.red { background: var(--warn-light); color: var(--warn); }
+  .history-pill.green { background: var(--accent-light); color: var(--accent); }
 
-  .history-pill.green {
-    background: var(--accent-light);
-    color: var(--accent);
-  }
-
-  /* STATS */
   .stats-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -491,23 +504,9 @@
     padding: 16px;
   }
 
-  .stat-value {
-    font-family: var(--mono);
-    font-size: 32px;
-    font-weight: 300;
-    line-height: 1;
-    margin-bottom: 4px;
-  }
+  .stat-value { font-family: var(--mono); font-size: 32px; font-weight: 300; line-height: 1; margin-bottom: 4px; }
+  .stat-label { font-size: 11px; color: var(--muted); font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; }
 
-  .stat-label {
-    font-size: 11px;
-    color: var(--muted);
-    font-weight: 500;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-  }
-
-  /* DEDUCTION LIST */
   .deduction-list { margin-top: 8px; }
 
   .deduction-item {
@@ -520,12 +519,9 @@
   }
 
   .deduction-item:last-child { border-bottom: none; }
-
-  .deduction-name { color: var(--text); }
   .deduction-pts { font-family: var(--mono); font-size: 12px; color: var(--warn); font-weight: 500; }
   .deduction-ok { font-family: var(--mono); font-size: 12px; color: var(--accent); }
 
-  /* PULSE ANIMATION */
   @keyframes pulse {
     0% { transform: scale(1); }
     50% { transform: scale(1.05); }
@@ -534,7 +530,6 @@
 
   .pulse { animation: pulse 0.4s ease; }
 
-  /* TOAST */
   .toast {
     position: fixed;
     bottom: 100px;
@@ -553,11 +548,7 @@
     z-index: 200;
   }
 
-  .toast.show {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-  }
-
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 </style>
 </head>
 <body>
@@ -565,7 +556,10 @@
 <div class="header">
   <div class="header-top">
     <span class="app-name">SLEEP LOG</span>
-    <span class="today-date" id="todayDate"></span>
+    <div class="date-picker-wrap">
+      <span style="font-size:13px">📅</span>
+      <input type="date" id="logDate" onchange="onDateChange()">
+    </div>
   </div>
   <div class="score-display">
     <div class="score-number" id="scoreNum">—</div>
@@ -577,7 +571,7 @@
 </div>
 
 <div class="tabs">
-  <div class="tab active" onclick="switchTab('log')">TODAY</div>
+  <div class="tab active" onclick="switchTab('log')">LOG</div>
   <div class="tab" onclick="switchTab('history')">HISTORY</div>
   <div class="tab" onclick="switchTab('stats')">STATS</div>
 </div>
@@ -587,11 +581,12 @@
   <!-- LOG TAB -->
   <div class="tab-panel active" id="tab-log">
 
-    <!-- SLEEP TIME -->
     <div class="section">
       <div class="section-header">
-        <span class="section-icon">🌙</span>
-        <span class="section-title">SLEEP</span>
+        <div class="section-header-left">
+          <span class="section-icon">🌙</span>
+          <span class="section-title">SLEEP</span>
+        </div>
       </div>
       <div class="section-body">
         <div class="time-row">
@@ -624,11 +619,12 @@
       </div>
     </div>
 
-    <!-- FOOD -->
     <div class="section">
       <div class="section-header">
-        <span class="section-icon">🍽</span>
-        <span class="section-title">FOOD</span>
+        <div class="section-header-left">
+          <span class="section-icon">🍽</span>
+          <span class="section-title">FOOD</span>
+        </div>
       </div>
       <div class="section-body">
         <div class="time-row">
@@ -648,11 +644,12 @@
       </div>
     </div>
 
-    <!-- BATH -->
     <div class="section">
       <div class="section-header">
-        <span class="section-icon">🛁</span>
-        <span class="section-title">BATH</span>
+        <div class="section-header-left">
+          <span class="section-icon">🛁</span>
+          <span class="section-title">BATH</span>
+        </div>
       </div>
       <div class="section-body">
         <div class="time-row">
@@ -663,19 +660,18 @@
           <input type="time" class="time-input" id="bathtime" onchange="recalc()">
         </div>
         <div class="toggle-row">
-          <div>
-            <div class="toggle-label">シャワーのみ</div>
-          </div>
-          <div class="toggle" id="showerOnly" onclick="toggleSwitch(this); recalc()"></div>
+          <div><div class="toggle-label">シャワーのみ</div></div>
+          <div class="toggle" id="showerOnly" onclick="toggleSwitch(this)"></div>
         </div>
       </div>
     </div>
 
-    <!-- CAFFEINE -->
     <div class="section">
       <div class="section-header">
-        <span class="section-icon">☕️</span>
-        <span class="section-title">CAFFEINE</span>
+        <div class="section-header-left">
+          <span class="section-icon">☕️</span>
+          <span class="section-title">CAFFEINE</span>
+        </div>
       </div>
       <div class="section-body">
         <div class="time-row">
@@ -686,35 +682,32 @@
           <input type="time" class="time-input" id="caffeine" onchange="recalc()">
         </div>
         <div class="toggle-row">
-          <div>
-            <div class="toggle-label">カフェインなし</div>
-          </div>
+          <div><div class="toggle-label">カフェインなし</div></div>
           <div class="toggle on" id="noCaffeine" onclick="toggleSwitch(this); recalc()"></div>
         </div>
       </div>
     </div>
 
-    <!-- PRE-SLEEP ACTIVITY -->
     <div class="section">
       <div class="section-header">
-        <span class="section-icon">💻</span>
-        <span class="section-title">PRE-SLEEP</span>
+        <div class="section-header-left">
+          <span class="section-icon">💻</span>
+          <span class="section-title">PRE-SLEEP</span>
+        </div>
       </div>
       <div class="section-body">
-        <div style="margin-bottom: 12px;">
-          <div class="time-label" style="margin-bottom: 8px;">作業内容（複数選択可）</div>
-          <div class="select-grid" id="activityGrid">
-            <div class="select-chip warn-chip" data-val="ea" onclick="toggleChip(this); recalc()">EA作業</div>
-            <div class="select-chip warn-chip" data-val="screen" onclick="toggleChip(this); recalc()">スマホ</div>
-            <div class="select-chip warn-chip" data-val="work" onclick="toggleChip(this); recalc()">仕事</div>
-            <div class="select-chip warn-chip" data-val="game" onclick="toggleChip(this); recalc()">ゲーム</div>
-            <div class="select-chip" data-val="read" onclick="toggleChip(this); recalc()">読書</div>
-            <div class="select-chip" data-val="stretch" onclick="toggleChip(this); recalc()">ストレッチ</div>
-            <div class="select-chip" data-val="meditate" onclick="toggleChip(this); recalc()">瞑想</div>
-            <div class="select-chip" data-val="nothing" onclick="toggleChip(this); recalc()">なにもしない</div>
+        <div style="margin-bottom: 4px;">
+          <div class="time-label" style="margin-bottom: 10px;">就寝前の行動（複数選択可）</div>
+          <div class="select-grid" id="activityGrid"></div>
+
+          <!-- ADD CUSTOM ACTIVITY -->
+          <div class="add-activity-row">
+            <input type="text" class="add-activity-input" id="newActivityInput" placeholder="項目を追加" maxlength="12">
+            <div class="add-activity-type" id="newActivityType" onclick="toggleNewActivityType()">良い</div>
+            <button class="add-activity-btn" onclick="addCustomActivity()">+</button>
           </div>
         </div>
-        <div class="time-row">
+        <div class="time-row" style="margin-top:12px">
           <div>
             <div class="time-label">作業終了</div>
             <div class="time-sub">就寝1時間前が理想</div>
@@ -724,11 +717,12 @@
       </div>
     </div>
 
-    <!-- DAYTIME -->
     <div class="section">
       <div class="section-header">
-        <span class="section-icon">☀️</span>
-        <span class="section-title">DAYTIME</span>
+        <div class="section-header-left">
+          <span class="section-icon">☀️</span>
+          <span class="section-title">DAYTIME</span>
+        </div>
       </div>
       <div class="section-body">
         <div class="slider-row">
@@ -757,25 +751,27 @@
       </div>
     </div>
 
-    <!-- SCORE BREAKDOWN -->
     <div class="section" id="breakdownSection" style="display:none">
       <div class="section-header">
-        <span class="section-icon">📊</span>
-        <span class="section-title">BREAKDOWN</span>
+        <div class="section-header-left">
+          <span class="section-icon">📊</span>
+          <span class="section-title">BREAKDOWN</span>
+        </div>
       </div>
       <div class="section-body">
         <div class="deduction-list" id="deductionList"></div>
       </div>
     </div>
 
-    <!-- NOTE -->
     <div class="section">
       <div class="section-header">
-        <span class="section-icon">✏️</span>
-        <span class="section-title">NOTE</span>
+        <div class="section-header-left">
+          <span class="section-icon">✏️</span>
+          <span class="section-title">NOTE</span>
+        </div>
       </div>
       <div class="section-body">
-        <textarea class="note-input" id="noteInput" placeholder="今日のメモ（気になったこと、夢、など）"></textarea>
+        <textarea class="note-input" id="noteInput" placeholder="今日のメモ"></textarea>
       </div>
     </div>
 
@@ -793,40 +789,148 @@
 
 </div>
 
-<!-- SAVE BUTTON -->
-<button class="save-btn" id="saveBtn" onclick="saveLog()">SAVE TODAY</button>
-
-<!-- TOAST -->
+<button class="save-btn" id="saveBtn" onclick="saveLog()">SAVE</button>
 <div class="toast" id="toast"></div>
 
 <script>
+// ==================== DEFAULT ACTIVITIES ====================
+const DEFAULT_ACTIVITIES = [
+  { val: 'ea', label: 'EA作業', bad: true },
+  { val: 'screen', label: 'スマホ', bad: true },
+  { val: 'work', label: 'PC作業', bad: true },
+  { val: 'game', label: 'ゲーム', bad: true },
+  { val: 'read', label: '読書', bad: false },
+  { val: 'stretch', label: 'ストレッチ', bad: false },
+  { val: 'meditate', label: '瞑想', bad: false },
+  { val: 'nothing', label: 'なにもしない', bad: false },
+];
+
 // ==================== STATE ====================
-const state = {
-  wakeupRating: 0,
-};
+const state = { wakeupRating: 0, newActivityIsBad: false };
+
+function getCustomActivities() {
+  try { return JSON.parse(localStorage.getItem('custom_activities') || '[]'); } catch { return []; }
+}
+
+function saveCustomActivities(arr) {
+  localStorage.setItem('custom_activities', JSON.stringify(arr));
+}
+
+function getAllActivities() {
+  return [...DEFAULT_ACTIVITIES, ...getCustomActivities()];
+}
+
+// ==================== RENDER ACTIVITY CHIPS ====================
+function renderActivityGrid(selectedVals = []) {
+  const grid = document.getElementById('activityGrid');
+  const all = getAllActivities();
+
+  grid.innerHTML = all.map(a => {
+    const isSelected = selectedVals.includes(a.val);
+    const isDefault = DEFAULT_ACTIVITIES.some(d => d.val === a.val);
+    const badClass = a.bad ? 'warn-chip' : '';
+    const selClass = isSelected ? 'selected' : '';
+    const deleteBtn = !isDefault
+      ? `<span class="chip-delete" onclick="deleteActivity(event,'${a.val}')">✕</span>`
+      : '';
+    return `<div class="select-chip ${badClass} ${selClass}" data-val="${a.val}" data-bad="${a.bad}" onclick="toggleChip(this); recalc()">${a.label}${deleteBtn}</div>`;
+  }).join('');
+}
+
+function deleteActivity(e, val) {
+  e.stopPropagation();
+  const customs = getCustomActivities().filter(a => a.val !== val);
+  saveCustomActivities(customs);
+  const selectedVals = [...document.querySelectorAll('#activityGrid .select-chip.selected')].map(c => c.dataset.val);
+  renderActivityGrid(selectedVals.filter(v => v !== val));
+  recalc();
+}
+
+function toggleNewActivityType() {
+  state.newActivityIsBad = !state.newActivityIsBad;
+  const btn = document.getElementById('newActivityType');
+  btn.textContent = state.newActivityIsBad ? '悪い' : '良い';
+  btn.classList.toggle('bad-type', state.newActivityIsBad);
+}
+
+function addCustomActivity() {
+  const input = document.getElementById('newActivityInput');
+  const label = input.value.trim();
+  if (!label) return;
+
+  const val = 'custom_' + Date.now();
+  const customs = getCustomActivities();
+  customs.push({ val, label, bad: state.newActivityIsBad });
+  saveCustomActivities(customs);
+
+  const selectedVals = [...document.querySelectorAll('#activityGrid .select-chip.selected')].map(c => c.dataset.val);
+  renderActivityGrid(selectedVals);
+  input.value = '';
+  recalc();
+}
+
+// Enter key on input
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('newActivityInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') addCustomActivity();
+  });
+});
 
 // ==================== UTILS ====================
-function toMinutes(timeStr) {
-  if (!timeStr) return null;
-  const [h, m] = timeStr.split(':').map(Number);
+function toMinutes(t) {
+  if (!t) return null;
+  const [h, m] = t.split(':').map(Number);
   return h * 60 + m;
 }
 
 function minDiff(t1, t2) {
-  // t2 - t1, wrapping midnight
-  let diff = t2 - t1;
-  if (diff < 0) diff += 1440;
-  return diff;
+  let d = t2 - t1;
+  if (d < 0) d += 1440;
+  return d;
 }
 
-function formatMins(mins) {
-  const h = Math.floor(mins / 60);
-  const m = mins % 60;
-  return m === 0 ? `${h}h` : `${h}h${m}m`;
+function formatMins(m) {
+  const h = Math.floor(m / 60), mm = m % 60;
+  return mm === 0 ? `${h}h` : `${h}h${mm}m`;
 }
 
-function getTodayStr() {
-  return new Date().toLocaleDateString('ja-JP', { year:'numeric', month:'2-digit', day:'2-digit' });
+function getDateStr(date) {
+  return date.toLocaleDateString('ja-JP', { year:'numeric', month:'2-digit', day:'2-digit' });
+}
+
+function toInputDateVal(dateStr) {
+  // dateStr: "2026/06/07" → "2026-06-07"
+  return dateStr.replace(/\//g, '-');
+}
+
+// ==================== DATE HANDLING ====================
+function getTodayISO() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+function getSelectedDate() {
+  return document.getElementById('logDate').value || getTodayISO();
+}
+
+function getSelectedDateLabel() {
+  const val = getSelectedDate();
+  const [y, m, d] = val.split('-');
+  const date = new Date(+y, +m-1, +d);
+  const today = new Date(); today.setHours(0,0,0,0);
+  const yesterday = new Date(today); yesterday.setDate(today.getDate()-1);
+  if (date.toDateString() === today.toDateString()) return '今日';
+  if (date.toDateString() === yesterday.toDateString()) return '昨日';
+  return `${m}/${d}`;
+}
+
+function onDateChange() {
+  loadLogForDate(getSelectedDate());
+  updateSaveBtnLabel();
+}
+
+function updateSaveBtnLabel() {
+  document.getElementById('saveBtn').textContent = `SAVE — ${getSelectedDateLabel()}`;
 }
 
 // ==================== RECALC ====================
@@ -842,85 +946,56 @@ function recalc() {
   const workend = toMinutes(document.getElementById('workend').value);
   const alcohol = document.getElementById('alcohol').classList.contains('on');
   const noCaffeine = document.getElementById('noCaffeine').classList.contains('on');
-  const exercise = document.getElementById('exercise').classList.contains('on');
 
-  const activities = [...document.querySelectorAll('#activityGrid .select-chip.selected')].map(c => c.dataset.val);
-  const badActivities = ['ea','screen','work','game'];
-  const hasBadActivity = activities.some(a => badActivities.includes(a));
+  const selectedChips = [...document.querySelectorAll('#activityGrid .select-chip.selected')];
+  const hasBadActivity = selectedChips.some(c => c.dataset.bad === 'true');
 
   // Sleep duration
   if (bed !== null && wake !== null) {
-    let sleepMins = minDiff(bed, wake);
-    if (sleepMins < 420) { // < 7h
+    const sleepMins = minDiff(bed, wake);
+    if (sleepMins < 420) {
       const pts = Math.min(25, Math.round((420 - sleepMins) / 12));
       score -= pts;
       deductions.push({ name: `睡眠時間 ${formatMins(sleepMins)}`, pts, bad: true });
-    } else if (sleepMins >= 420 && sleepMins <= 510) {
+    } else {
       deductions.push({ name: `睡眠時間 ${formatMins(sleepMins)}`, pts: 0, bad: false });
-    } else if (sleepMins > 510) {
-      deductions.push({ name: `睡眠時間 ${formatMins(sleepMins)} (長め)`, pts: 0, bad: false });
     }
   }
 
-  // Meal timing
+  // Meal
   if (meal !== null && bed !== null) {
     const gap = minDiff(meal, bed);
-    if (gap < 120) {
-      score -= 15;
-      deductions.push({ name: `食事→就寝 ${formatMins(gap)}`, pts: 15, bad: true });
-    } else if (gap < 180) {
-      score -= 8;
-      deductions.push({ name: `食事→就寝 ${formatMins(gap)}`, pts: 8, bad: true });
-    } else {
-      deductions.push({ name: `食事→就寝 ${formatMins(gap)}`, pts: 0, bad: false });
-    }
+    if (gap < 120) { score -= 15; deductions.push({ name: `食事→就寝 ${formatMins(gap)}`, pts: 15, bad: true }); }
+    else if (gap < 180) { score -= 8; deductions.push({ name: `食事→就寝 ${formatMins(gap)}`, pts: 8, bad: true }); }
+    else { deductions.push({ name: `食事→就寝 ${formatMins(gap)}`, pts: 0, bad: false }); }
   }
 
   // Alcohol
-  if (alcohol) {
-    score -= 15;
-    deductions.push({ name: 'アルコールあり', pts: 15, bad: true });
-  }
+  if (alcohol) { score -= 15; deductions.push({ name: 'アルコールあり', pts: 15, bad: true }); }
 
-  // Bath timing
+  // Bath
   if (bath !== null && bed !== null) {
     const gap = minDiff(bath, bed);
-    if (gap < 30) {
-      score -= 10;
-      deductions.push({ name: `入浴→就寝 ${formatMins(gap)} (近すぎ)`, pts: 10, bad: true });
-    } else if (gap >= 60 && gap <= 120) {
-      deductions.push({ name: `入浴タイミング 最適`, pts: 0, bad: false });
-    } else {
-      deductions.push({ name: `入浴→就寝 ${formatMins(gap)}`, pts: 0, bad: false });
-    }
+    if (gap < 30) { score -= 10; deductions.push({ name: `入浴→就寝 ${formatMins(gap)} (近すぎ)`, pts: 10, bad: true }); }
+    else if (gap >= 60 && gap <= 120) { deductions.push({ name: `入浴タイミング 最適`, pts: 0, bad: false }); }
+    else { deductions.push({ name: `入浴→就寝 ${formatMins(gap)}`, pts: 0, bad: false }); }
   }
 
   // Caffeine
   if (!noCaffeine && caffeine !== null) {
     const cafHour = Math.floor(caffeine / 60);
-    if (cafHour >= 16) {
-      score -= 15;
-      deductions.push({ name: `カフェイン ${Math.floor(caffeine/60)}:${String(caffeine%60).padStart(2,'0')}`, pts: 15, bad: true });
-    } else if (cafHour >= 14) {
-      score -= 8;
-      deductions.push({ name: `カフェイン ${Math.floor(caffeine/60)}:${String(caffeine%60).padStart(2,'0')}`, pts: 8, bad: true });
-    } else {
-      deductions.push({ name: `カフェイン ${Math.floor(caffeine/60)}:${String(caffeine%60).padStart(2,'0')}`, pts: 0, bad: false });
-    }
+    const cafStr = `${Math.floor(caffeine/60)}:${String(caffeine%60).padStart(2,'0')}`;
+    if (cafHour >= 16) { score -= 15; deductions.push({ name: `カフェイン ${cafStr}`, pts: 15, bad: true }); }
+    else if (cafHour >= 14) { score -= 8; deductions.push({ name: `カフェイン ${cafStr}`, pts: 8, bad: true }); }
+    else { deductions.push({ name: `カフェイン ${cafStr}`, pts: 0, bad: false }); }
   }
 
-  // Pre-sleep work
+  // Pre-sleep bad activity
   if (hasBadActivity && workend !== null && bed !== null) {
     const gap = minDiff(workend, bed);
-    if (gap < 60) {
-      score -= 20;
-      deductions.push({ name: `作業→就寝 ${formatMins(gap)} (近すぎ)`, pts: 20, bad: true });
-    } else if (gap < 90) {
-      score -= 10;
-      deductions.push({ name: `作業→就寝 ${formatMins(gap)}`, pts: 10, bad: true });
-    } else {
-      deductions.push({ name: `作業→就寝 ${formatMins(gap)}`, pts: 0, bad: false });
-    }
+    if (gap < 60) { score -= 20; deductions.push({ name: `作業→就寝 ${formatMins(gap)} (近すぎ)`, pts: 20, bad: true }); }
+    else if (gap < 90) { score -= 10; deductions.push({ name: `作業→就寝 ${formatMins(gap)}`, pts: 10, bad: true }); }
+    else { deductions.push({ name: `作業→就寝 ${formatMins(gap)}`, pts: 0, bad: false }); }
   } else if (hasBadActivity && workend === null) {
     score -= 15;
     deductions.push({ name: '作業終了時間 未入力', pts: 15, bad: true });
@@ -928,7 +1003,6 @@ function recalc() {
 
   score = Math.max(0, score);
 
-  // Update UI
   const scoreEl = document.getElementById('scoreNum');
   const barEl = document.getElementById('scoreBar');
   scoreEl.textContent = score;
@@ -940,17 +1014,14 @@ function recalc() {
   if (score < 50) barEl.classList.add('bad');
   else if (score < 75) barEl.classList.add('warn');
 
-  // Breakdown
   const breakdownEl = document.getElementById('breakdownSection');
   const listEl = document.getElementById('deductionList');
   if (deductions.length > 0) {
     breakdownEl.style.display = 'block';
     listEl.innerHTML = deductions.map(d => `
       <div class="deduction-item">
-        <span class="deduction-name">${d.name}</span>
-        ${d.bad
-          ? `<span class="deduction-pts">-${d.pts}pt</span>`
-          : `<span class="deduction-ok">✓</span>`}
+        <span>${d.name}</span>
+        ${d.bad ? `<span class="deduction-pts">-${d.pts}pt</span>` : `<span class="deduction-ok">✓</span>`}
       </div>
     `).join('');
   } else {
@@ -961,11 +1032,10 @@ function recalc() {
 }
 
 // ==================== INTERACTIONS ====================
-function toggleSwitch(el) {
-  el.classList.toggle('on');
-}
+function toggleSwitch(el) { el.classList.toggle('on'); }
 
 function toggleChip(el) {
+  if (el.closest('.chip-delete')) return;
   el.classList.toggle('selected');
 }
 
@@ -974,16 +1044,19 @@ function selectEmoji(el) {
   document.querySelectorAll(`.emoji-btn[data-group="${group}"]`).forEach(e => e.classList.remove('selected'));
   el.classList.add('selected');
   state[group + 'Rating'] = parseInt(el.dataset.val);
-  recalc();
 }
 
-// ==================== SAVE ====================
+// ==================== SAVE / LOAD ====================
+function getLogs() {
+  try { return JSON.parse(localStorage.getItem('sleep_logs') || '[]'); } catch { return []; }
+}
+
 function saveLog() {
   const score = recalc();
-  const date = getTodayStr();
+  const dateKey = getSelectedDate();
 
   const log = {
-    date,
+    date: dateKey,
     score,
     bedtime: document.getElementById('bedtime').value,
     waketime: document.getElementById('waketime').value,
@@ -1003,25 +1076,68 @@ function saveLog() {
   };
 
   let logs = getLogs();
-  logs = logs.filter(l => l.date !== date);
+  logs = logs.filter(l => l.date !== dateKey);
   logs.unshift(log);
+  logs.sort((a,b) => b.date.localeCompare(a.date));
   localStorage.setItem('sleep_logs', JSON.stringify(logs));
 
   const btn = document.getElementById('saveBtn');
+  const orig = btn.textContent;
   btn.textContent = 'SAVED ✓';
   btn.classList.add('saved');
-  setTimeout(() => {
-    btn.textContent = 'SAVE TODAY';
-    btn.classList.remove('saved');
-  }, 2000);
-
+  setTimeout(() => { btn.textContent = orig; btn.classList.remove('saved'); }, 2000);
   showToast('保存しました');
 }
 
-function getLogs() {
-  try {
-    return JSON.parse(localStorage.getItem('sleep_logs') || '[]');
-  } catch { return []; }
+function loadLogForDate(dateKey) {
+  const logs = getLogs();
+  const log = logs.find(l => l.date === dateKey);
+
+  // Reset form
+  document.getElementById('bedtime').value = '';
+  document.getElementById('waketime').value = '';
+  document.getElementById('mealtime').value = '';
+  document.getElementById('bathtime').value = '';
+  document.getElementById('caffeine').value = '';
+  document.getElementById('workend').value = '';
+  document.getElementById('noteInput').value = '';
+  document.getElementById('alcohol').classList.remove('on');
+  document.getElementById('noCaffeine').classList.add('on');
+  document.getElementById('showerOnly').classList.remove('on');
+  document.getElementById('exercise').classList.remove('on');
+  document.getElementById('drowsiness').value = 0;
+  document.getElementById('stress').value = 0;
+  document.getElementById('drowsinessVal').textContent = '—';
+  document.getElementById('stressVal').textContent = '—';
+  document.querySelectorAll('.emoji-btn').forEach(e => e.classList.remove('selected'));
+  document.getElementById('scoreNum').textContent = '—';
+  document.getElementById('scoreBar').style.width = '0%';
+  document.getElementById('breakdownSection').style.display = 'none';
+
+  if (!log) {
+    renderActivityGrid([]);
+    return;
+  }
+
+  document.getElementById('bedtime').value = log.bedtime || '';
+  document.getElementById('waketime').value = log.waketime || '';
+  document.getElementById('mealtime').value = log.meal || '';
+  document.getElementById('bathtime').value = log.bath || '';
+  document.getElementById('caffeine').value = log.caffeine || '';
+  document.getElementById('workend').value = log.workend || '';
+  document.getElementById('noteInput').value = log.note || '';
+  if (log.alcohol) document.getElementById('alcohol').classList.add('on');
+  if (log.noCaffeine === false) document.getElementById('noCaffeine').classList.remove('on');
+  if (log.exercise) document.getElementById('exercise').classList.add('on');
+  if (log.drowsiness) { document.getElementById('drowsiness').value = log.drowsiness; document.getElementById('drowsinessVal').textContent = log.drowsiness; }
+  if (log.stress) { document.getElementById('stress').value = log.stress; document.getElementById('stressVal').textContent = log.stress; }
+  if (log.wakeupRating) {
+    const btn = document.querySelector(`.emoji-btn[data-group="wakeup"][data-val="${log.wakeupRating}"]`);
+    if (btn) btn.classList.add('selected');
+  }
+
+  renderActivityGrid(log.activities || []);
+  recalc();
 }
 
 // ==================== TOAST ====================
@@ -1039,9 +1155,7 @@ function switchTab(tab) {
   });
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.getElementById('tab-' + tab).classList.add('active');
-
   document.getElementById('saveBtn').style.display = tab === 'log' ? 'block' : 'none';
-
   if (tab === 'history') renderHistory();
   if (tab === 'stats') renderStats();
 }
@@ -1050,38 +1164,36 @@ function switchTab(tab) {
 function renderHistory() {
   const logs = getLogs();
   const el = document.getElementById('historyList');
-
   if (logs.length === 0) {
-    el.innerHTML = `<div class="history-empty">まだ記録がありません<br>最初のログを保存してみよう</div>`;
+    el.innerHTML = `<div class="history-empty">まだ記録がありません</div>`;
     return;
   }
 
-  const activityLabels = { ea:'EA作業', screen:'スマホ', work:'仕事', game:'ゲーム', read:'読書', stretch:'ストレッチ', meditate:'瞑想', nothing:'なにもしない' };
-
   el.innerHTML = logs.map(log => {
     const scoreClass = log.score >= 75 ? 'good' : log.score >= 50 ? 'ok' : 'bad';
-    const badActs = ['ea','screen','work','game'];
-
+    const allActs = getAllActivities();
     let pills = [];
     if (log.bedtime && log.waketime) {
-      const sleepMins = minDiff(toMinutes(log.bedtime), toMinutes(log.waketime));
-      pills.push(`<span class="history-pill">${formatMins(sleepMins)}</span>`);
+      pills.push(`<span class="history-pill">${formatMins(minDiff(toMinutes(log.bedtime), toMinutes(log.waketime)))}</span>`);
     }
     if (log.alcohol) pills.push(`<span class="history-pill red">アルコール</span>`);
     if (log.activities) {
-      log.activities.filter(a => badActs.includes(a)).forEach(a => {
-        pills.push(`<span class="history-pill red">${activityLabels[a]}</span>`);
-      });
-      log.activities.filter(a => !badActs.includes(a)).forEach(a => {
-        pills.push(`<span class="history-pill green">${activityLabels[a]}</span>`);
+      log.activities.forEach(v => {
+        const act = allActs.find(a => a.val === v);
+        if (!act) return;
+        pills.push(`<span class="history-pill ${act.bad ? 'red' : 'green'}">${act.label}</span>`);
       });
     }
 
+    // Format date display
+    const [y,m,d] = log.date.split('-');
+    const dateLabel = `${y}/${m}/${d}`;
+
     return `
-      <div class="history-card">
+      <div class="history-card" onclick="jumpToDate('${log.date}')">
         <div class="history-top">
           <div>
-            <div class="history-date">${log.date}</div>
+            <div class="history-date">${dateLabel}</div>
             ${log.note ? `<div style="font-size:12px;color:var(--muted);margin-top:4px;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${log.note}</div>` : ''}
           </div>
           <div class="history-score ${scoreClass}">${log.score}</div>
@@ -1092,11 +1204,17 @@ function renderHistory() {
   }).join('');
 }
 
+function jumpToDate(dateKey) {
+  document.getElementById('logDate').value = dateKey;
+  loadLogForDate(dateKey);
+  updateSaveBtnLabel();
+  switchTab('log');
+}
+
 // ==================== STATS ====================
 function renderStats() {
   const logs = getLogs();
   const el = document.getElementById('statsContent');
-
   if (logs.length === 0) {
     el.innerHTML = `<div class="history-empty">記録が増えると<br>統計が表示されます</div>`;
     return;
@@ -1104,53 +1222,33 @@ function renderStats() {
 
   const avgScore = Math.round(logs.reduce((s, l) => s + l.score, 0) / logs.length);
   const maxScore = Math.max(...logs.map(l => l.score));
-
   const sleepDurations = logs.filter(l => l.bedtime && l.waketime).map(l => minDiff(toMinutes(l.bedtime), toMinutes(l.waketime)));
   const avgSleep = sleepDurations.length ? Math.round(sleepDurations.reduce((s,v) => s+v, 0) / sleepDurations.length) : null;
-
   const alcoholDays = logs.filter(l => l.alcohol).length;
   const eaDays = logs.filter(l => l.activities && l.activities.includes('ea')).length;
 
   el.innerHTML = `
     <div class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-value" style="color:var(--accent)">${avgScore}</div>
-        <div class="stat-label">平均スコア</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value">${maxScore}</div>
-        <div class="stat-label">最高スコア</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value">${avgSleep ? formatMins(avgSleep) : '—'}</div>
-        <div class="stat-label">平均睡眠</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value">${logs.length}</div>
-        <div class="stat-label">記録日数</div>
-      </div>
+      <div class="stat-card"><div class="stat-value" style="color:var(--accent)">${avgScore}</div><div class="stat-label">平均スコア</div></div>
+      <div class="stat-card"><div class="stat-value">${maxScore}</div><div class="stat-label">最高スコア</div></div>
+      <div class="stat-card"><div class="stat-value">${avgSleep ? formatMins(avgSleep) : '—'}</div><div class="stat-label">平均睡眠</div></div>
+      <div class="stat-card"><div class="stat-value">${logs.length}</div><div class="stat-label">記録日数</div></div>
     </div>
     <div class="section">
-      <div class="section-header">
-        <span class="section-icon">⚠️</span>
-        <span class="section-title">HABITS</span>
-      </div>
+      <div class="section-header"><div class="section-header-left"><span class="section-icon">⚠️</span><span class="section-title">HABITS</span></div></div>
       <div class="section-body">
-        <div class="deduction-item">
-          <span class="deduction-name">アルコールの日</span>
-          <span class="deduction-pts">${alcoholDays}日 / ${logs.length}日</span>
-        </div>
-        <div class="deduction-item">
-          <span class="deduction-name">就寝前EA作業</span>
-          <span class="deduction-pts">${eaDays}日 / ${logs.length}日</span>
-        </div>
+        <div class="deduction-item"><span>アルコールの日</span><span class="deduction-pts">${alcoholDays}日 / ${logs.length}日</span></div>
+        <div class="deduction-item"><span>就寝前EA作業</span><span class="deduction-pts">${eaDays}日 / ${logs.length}日</span></div>
       </div>
     </div>
   `;
 }
 
 // ==================== INIT ====================
-document.getElementById('todayDate').textContent = new Date().toLocaleDateString('ja-JP', { month:'2-digit', day:'2-digit', weekday:'short' });
+const todayISO = getTodayISO();
+document.getElementById('logDate').value = todayISO;
+updateSaveBtnLabel();
+renderActivityGrid([]);
 </script>
 </body>
 </html>
