@@ -38,8 +38,8 @@ export default function App() {
       </header>
 
       <main className="main">
-        {activeTab === 'books' && <BookList />}
-        {activeTab === 'scenes' && <SceneList user={user} />}
+        {activeTab === 'books' && <BookList onAddBook={() => setActiveTab('add-book')} />}
+        {activeTab === 'scenes' && <SceneList user={user} onAddScene={() => setActiveTab('add-scene')} onAddBook={() => setActiveTab('add-book')} />}
         {activeTab === 'add-book' && (
           <AddBook onDone={() => { setActiveTab('books'); showToast('本を追加しました') }} />
         )}

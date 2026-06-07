@@ -4,7 +4,7 @@ import { db } from '../firebase'
 
 const EMOTION_TAGS = ['怒り', '悲しみ', '喜び', '恐怖', '葛藤', '愛情', '孤独', '絶望', '希望', '嫉妬', '後悔', '驚き']
 
-export default function SceneList({ user }) {
+export default function SceneList({ user, onAddScene, onAddBook }) {
   const [scenes, setScenes] = useState([])
   const [books, setBooks] = useState({})
   const [loading, setLoading] = useState(true)
@@ -60,10 +60,23 @@ export default function SceneList({ user }) {
 
       {loading && <div style={{ color: 'var(--muted)', fontSize: 14, textAlign: 'center', padding: 32 }}>読み込み中...</div>}
 
-      {!loading && filtered.length === 0 && (
+      {!loading && scenes.length === 0 && Object.keys(books).length === 0 && (
+        <div className="empty">
+          <div className="empty-icon">📚</div>
+          <p>シーンを追加するには<br />まず本を登録してください。</p>
+          <button className="btn btn-primary" style={{ marginTop: 16 }} onClick={onAddBook}>
+            本を追加する
+          </button>
+        </div>
+      )}
+
+      {!loading && scenes.length === 0 && Object.keys(books).length > 0 && (
         <div className="empty">
           <div className="empty-icon">✍️</div>
-          <p>シーンはまだありません。<br />「シーンを追加」タブから記録できます。</p>
+          <p>シーンはまだありません。</p>
+          <button className="btn btn-primary" style={{ marginTop: 16 }} onClick={onAddScene}>
+            最初のシーンを追加する
+          </button>
         </div>
       )}
 

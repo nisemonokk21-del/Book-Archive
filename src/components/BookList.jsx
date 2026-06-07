@@ -4,7 +4,7 @@ import { db } from '../firebase'
 
 const GENRES = ['すべて', '恋愛小説', 'ミステリー', 'SF', 'ファンタジー', '純文学', '青春小説', 'ホラー', '歴史小説', 'ノンフィクション', 'その他']
 
-export default function BookList() {
+export default function BookList({ onAddBook }) {
   const [books, setBooks] = useState([])
   const [loading, setLoading] = useState(true)
   const [genre, setGenre] = useState('すべて')
@@ -42,10 +42,19 @@ export default function BookList() {
 
       {loading && <div style={{ color: 'var(--muted)', fontSize: 14, textAlign: 'center', padding: 32 }}>読み込み中...</div>}
 
-      {!loading && filtered.length === 0 && (
+      {!loading && books.length === 0 && (
         <div className="empty">
           <div className="empty-icon">📚</div>
-          <p>まだ本が登録されていません。<br />「本を追加」タブから追加できます。</p>
+          <p>まだ本が登録されていません。</p>
+          <button className="btn btn-primary" style={{ marginTop: 16 }} onClick={onAddBook}>
+            最初の本を追加する
+          </button>
+        </div>
+      )}
+
+      {!loading && books.length > 0 && filtered.length === 0 && (
+        <div className="empty">
+          <p style={{ fontSize: 14 }}>該当する本がありません</p>
         </div>
       )}
 

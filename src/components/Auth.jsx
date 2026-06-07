@@ -34,6 +34,19 @@ export default function Auth() {
       <div className="auth-logo">SCRIPT VAULT</div>
       <div className="auth-sub">本とシーンの記録庫</div>
 
+      <div style={{ width: '100%', maxWidth: 360, marginBottom: 32, display: 'flex', flexDirection: 'column', gap: 10 }}>
+        {[
+          { icon: '📚', text: '本を登録してあらすじ・登場人物をまとめる' },
+          { icon: '✍️', text: '印象的なシーンをページ・感情タグで記録' },
+          { icon: '🔒', text: '感想メモは自分だけに見える個人データ' },
+        ].map(({ icon, text }) => (
+          <div key={text} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 14px', background: 'var(--bg)', borderRadius: 'var(--radius-sm)', fontSize: 13, color: 'var(--muted)' }}>
+            <span style={{ fontSize: 18 }}>{icon}</span>
+            {text}
+          </div>
+        ))}
+      </div>
+
       <form className="auth-form" onSubmit={handleSubmit}>
         {error && <div className="auth-error">{error}</div>}
 
