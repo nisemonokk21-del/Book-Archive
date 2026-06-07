@@ -4,7 +4,7 @@ import { db } from '../firebase'
 
 const GENRES = ['すべて', '恋愛小説', 'ミステリー', 'SF', 'ファンタジー', '純文学', '青春小説', 'ホラー', '歴史小説', 'ノンフィクション', 'その他']
 
-export default function BookList({ onAddBook }) {
+export default function BookList({ onAddBook, onEditBook }) {
   const [books, setBooks] = useState([])
   const [loading, setLoading] = useState(true)
   const [genre, setGenre] = useState('すべて')
@@ -64,17 +64,28 @@ export default function BookList({ onAddBook }) {
           book={book}
           isExpanded={expanded === book.id}
           onToggle={() => setExpanded(expanded === book.id ? null : book.id)}
+          onEdit={() => onEditBook(book)}
         />
       ))}
     </div>
   )
 }
 
-function BookCard({ book, isExpanded, onToggle }) {
+function BookCard({ book, isExpanded, onToggle, onEdit }) {
   return (
     <div className="card">
-      <div className="card-title">{book.title}</div>
-      <div className="card-sub">{book.author}</div>
+      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8 }}>
+        <div style={{ flex: 1 }}>
+          <div className="card-title">{book.title}</div>
+          <div className="card-sub">{book.author}</div>
+        </div>
+        <button className="edit-icon-btn" onClick={onEdit} title="編集">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+          </svg>
+        </button>
+      </div>
 
       {book.genre && (
         <div className="tags">
@@ -103,9 +114,15 @@ function BookCard({ book, isExpanded, onToggle }) {
             <div>
               <div className="label" style={{ marginBottom: 6 }}>登場人物</div>
               <div className="tags">
-                {book.characters.map((c, i) => (
-                  <span key={i} className="tag tag-character">{c}</span>
-                ))}
+                {book.characters.map((c, i) => {
+                  const name = typeof c === 'string' ? c : c.name
+                  const gender = typeof c === 'string' ? null : c.gender
+                  return (
+                    <span key={i} className={`tag tag-character${gender === 'female' ? ' char-female' : ''}`}>
+                      {gender === 'male' ? '♂ ' : gender === 'female' ? '♀ ' : ''}{name}
+                    </span>
+                  )
+                })}
               </div>
             </div>
           )}

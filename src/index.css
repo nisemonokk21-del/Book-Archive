@@ -452,7 +452,42 @@ body {
 }
 .filter-chip.active { border-color: var(--accent); background: var(--accent-light); color: var(--accent); }
 
+/* ---- Edit icon button ---- */
+.edit-icon-btn {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.15s;
+  margin-top: 2px;
+}
+.edit-icon-btn:hover { color: var(--accent); border-color: var(--accent); }
+
 /* ---- Character list ---- */
+.char-gender-row { display: flex; gap: 8px; margin-bottom: 8px; }
+
+.gender-btn {
+  font-family: var(--sans);
+  font-size: 13px;
+  padding: 6px 14px;
+  border-radius: 99px;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.gender-btn:hover { border-color: var(--accent); color: var(--accent); }
+.gender-btn.male { border-color: #2563eb; background: #e8f0fe; color: #2563eb; font-weight: 500; }
+.gender-btn.female { border-color: #be185d; background: #fce7f3; color: #be185d; font-weight: 500; }
+
 .char-input-row { display: flex; gap: 8px; }
 .char-input-row .input { flex: 1; }
 
@@ -468,16 +503,20 @@ body {
   padding: 4px 10px;
   border-radius: 99px;
 }
+.char-item.female { background: #fce7f3; color: #be185d; }
 
 .char-remove {
   background: none;
   border: none;
-  color: #2563eb;
+  color: inherit;
   cursor: pointer;
   font-size: 14px;
   line-height: 1;
   padding: 0 2px;
 }
+
+/* ---- Character tag gender ---- */
+.tag-character.char-female { background: #fce7f3; color: #be185d; }
 
 /* ---- Memo field ---- */
 .memo-note {

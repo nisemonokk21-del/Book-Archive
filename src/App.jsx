@@ -13,6 +13,7 @@ export default function App() {
   const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState('books')
   const [toast, setToast] = useState(null)
+  const [editingBook, setEditingBook] = useState(null)
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (u) => {
@@ -38,10 +39,22 @@ export default function App() {
       </header>
 
       <main className="main">
-        {activeTab === 'books' && <BookList onAddBook={() => setActiveTab('add-book')} />}
+        {activeTab === 'books' && (
+          <BookList
+            onAddBook={() => setActiveTab('add-book')}
+            onEditBook={(book) => { setEditingBook(book); setActiveTab('edit-book') }}
+          />
+        )}
         {activeTab === 'scenes' && <SceneList user={user} onAddScene={() => setActiveTab('add-scene')} onAddBook={() => setActiveTab('add-book')} />}
         {activeTab === 'add-book' && (
           <AddBook onDone={() => { setActiveTab('books'); showToast('本を追加しました') }} />
+        )}
+        {activeTab === 'edit-book' && editingBook && (
+          <AddBook
+            book={editingBook}
+            onDone={() => { setActiveTab('books'); setEditingBook(null); showToast('本を更新しました') }}
+            onCancel={() => { setActiveTab('books'); setEditingBook(null) }}
+          />
         )}
         {activeTab === 'add-scene' && (
           <AddScene user={user} onDone={() => { setActiveTab('scenes'); showToast('シーンを追加しました') }} />

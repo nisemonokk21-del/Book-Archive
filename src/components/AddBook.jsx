@@ -1,18 +1,23 @@
 import { useState } from 'react'
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
+import { collection, addDoc, doc, updateDoc, serverTimestamp } from 'firebase/firestore'
 import { db } from '../firebase'
 
 const GENRES = ['恋愛小説', 'ミステリー', 'SF', 'ファンタジー', '純文学', '青春小説', 'ホラー', '歴史小説', 'ノンフィクション', 'その他']
 
-export default function AddBook({ onDone }) {
+const toCharObj = (c) => typeof c === 'string' ? { name: c, gender: null } : c
+
+export default function AddBook({ onDone, onCancel, book }) {
+  const isEdit = !!book
+
   const [form, setForm] = useState({
-    title: '',
-    author: '',
-    genre: '',
-    synopsis: '',
-    characters: [],
+    title: book?.title ?? '',
+    author: book?.author ?? '',
+    genre: book?.genre ?? '',
+    synopsis: book?.synopsis ?? '',
+    characters: (book?.characters ?? []).map(toCharObj),
   })
   const [charInput, setCharInput] = useState('')
+  const [charGender, setCharGender] = useState('male')
   const [saving, setSaving] = useState(false)
   const [aiLoading, setAiLoading] = useState(false)
   const [aiError, setAiError] = useState('')
@@ -21,13 +26,13 @@ export default function AddBook({ onDone }) {
 
   const addChar = () => {
     const v = charInput.trim()
-    if (v && !form.characters.includes(v)) {
-      set('characters', [...form.characters, v])
+    if (v && !form.characters.some((c) => c.name === v)) {
+      set('characters', [...form.characters, { name: v, gender: charGender }])
     }
     setCharInput('')
   }
 
-  const removeChar = (c) => set('characters', form.characters.filter((x) => x !== c))
+  const removeChar = (name) => set('characters', form.characters.filter((c) => c.name !== name))
 
   const handleAiSummary = async () => {
     if (!form.title) { setAiError('タイトルを入力してください'); return }
@@ -44,7 +49,9 @@ export default function AddBook({ onDone }) {
       setForm((f) => ({
         ...f,
         synopsis: data.synopsis || f.synopsis,
-        characters: data.characters?.length ? data.characters : f.characters,
+        characters: data.characters?.length
+          ? data.characters.map((c) => typeof c === 'string' ? { name: c, gender: null } : c)
+          : f.characters,
       }))
     } catch (err) {
       setAiError(err.message)
@@ -58,10 +65,17 @@ export default function AddBook({ onDone }) {
     if (!form.title) return
     setSaving(true)
     try {
-      await addDoc(collection(db, 'books'), {
-        ...form,
-        createdAt: serverTimestamp(),
-      })
+      if (isEdit) {
+        await updateDoc(doc(db, 'books', book.id), {
+          ...form,
+          updatedAt: serverTimestamp(),
+        })
+      } else {
+        await addDoc(collection(db, 'books'), {
+          ...form,
+          createdAt: serverTimestamp(),
+        })
+      }
       onDone()
     } catch (err) {
       console.error(err)
@@ -72,7 +86,7 @@ export default function AddBook({ onDone }) {
 
   return (
     <div>
-      <div className="form-title">本を追加</div>
+      <div className="form-title">{isEdit ? '本を編集' : '本を追加'}</div>
 
       <div className="ai-box" style={{ marginBottom: 24 }}>
         <div className="ai-box-title">
@@ -142,6 +156,18 @@ export default function AddBook({ onDone }) {
 
         <div className="field">
           <label className="label">登場人物</label>
+          <div className="char-gender-row">
+            <button
+              type="button"
+              className={`gender-btn${charGender === 'male' ? ' male' : ''}`}
+              onClick={() => setCharGender('male')}
+            >♂ 男</button>
+            <button
+              type="button"
+              className={`gender-btn${charGender === 'female' ? ' female' : ''}`}
+              onClick={() => setCharGender('female')}
+            >♀ 女</button>
+          </div>
           <div className="char-input-row">
             <input
               className="input"
@@ -155,22 +181,31 @@ export default function AddBook({ onDone }) {
           {form.characters.length > 0 && (
             <div className="char-list">
               {form.characters.map((c) => (
-                <span key={c} className="char-item">
-                  {c}
-                  <button type="button" className="char-remove" onClick={() => removeChar(c)}>×</button>
+                <span key={c.name} className={`char-item${c.gender === 'female' ? ' female' : ''}`}>
+                  {c.gender === 'male' ? '♂ ' : c.gender === 'female' ? '♀ ' : ''}{c.name}
+                  <button type="button" className="char-remove" onClick={() => removeChar(c.name)}>×</button>
                 </span>
               ))}
             </div>
           )}
         </div>
 
-        <button
-          type="submit"
-          className="btn btn-primary btn-full"
-          disabled={saving || !form.title}
-        >
-          {saving ? <><span className="spinner" />保存中...</> : '本を追加する'}
-        </button>
+        <div style={{ display: 'flex', gap: 10 }}>
+          {isEdit && (
+            <button type="button" className="btn btn-ghost btn-full" onClick={onCancel}>
+              キャンセル
+            </button>
+          )}
+          <button
+            type="submit"
+            className="btn btn-primary btn-full"
+            disabled={saving || !form.title}
+          >
+            {saving
+              ? <><span className="spinner" />{isEdit ? '更新中...' : '保存中...'}</>
+              : isEdit ? '本を更新する' : '本を追加する'}
+          </button>
+        </div>
       </form>
     </div>
   )
