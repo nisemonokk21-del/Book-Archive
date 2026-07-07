@@ -49,25 +49,11 @@ export default function SceneForm({ user, scene, initialBookId, onDone, onCancel
     setPhotoError('')
     setPhotoLoading(true)
     try {
-      // 圧縮してから保存・文字起こしに使う（Firestoreの1MB制限と無料枠の節約のため）
+      // Firestoreの1MB制限と無料枠の節約のため、保存前に圧縮する
       const compressed = await compressImage(file)
       set('photo', compressed.dataUrl)
-
-      const res = await fetch('/api/ai-transcribe', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ imageBase64: compressed.base64, mediaType: compressed.mediaType }),
-      })
-      const data = await res.json()
-      if (!res.ok) throw new Error(data.error || '文字起こしに失敗しました')
-      if (data.text) {
-        setForm((f) => ({
-          ...f,
-          description: f.description ? `${f.description}\n${data.text}` : data.text,
-        }))
-      }
     } catch (err) {
-      setPhotoError(err.message)
+      setPhotoError(err.message || '写真の読み込みに失敗しました')
     } finally {
       setPhotoLoading(false)
     }
@@ -159,7 +145,7 @@ export default function SceneForm({ user, scene, initialBookId, onDone, onCancel
         </div>
 
         <div className="field">
-          <label className="label">シーン本文・説明</label>
+          <label className="label">ページの写真</label>
 
           <div
             className="photo-capture"
@@ -174,16 +160,16 @@ export default function SceneForm({ user, scene, initialBookId, onDone, onCancel
               onChange={handlePhoto}
             />
             {form.photo && (
-              <img src={form.photo} alt="撮影したページ" className="photo-preview" />
+              <img src={form.photo} alt="ページの写真" className="photo-preview" />
             )}
             {photoLoading ? (
               <div style={{ color: 'var(--muted)', fontSize: 13, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
-                <span className="spinner spinner-dark" />文字起こし中...
+                <span className="spinner spinner-dark" />読み込み中...
               </div>
             ) : (
               <div style={{ color: 'var(--muted)', fontSize: 13 }}>
                 <div style={{ fontSize: 24, marginBottom: 6 }}>📷</div>
-                {form.photo ? '別の写真を撮る' : 'ページを撮影して文字起こし'}
+                {form.photo ? '別の写真に変える' : 'ページを撮影 / 写真を選ぶ'}
               </div>
             )}
           </div>
@@ -195,7 +181,7 @@ export default function SceneForm({ user, scene, initialBookId, onDone, onCancel
               onClick={() => set('photo', null)}
               style={{ alignSelf: 'flex-start', marginBottom: 8 }}
             >
-              写真を削除（文字だけ保存）
+              写真を削除
             </button>
           )}
 
@@ -203,16 +189,20 @@ export default function SceneForm({ user, scene, initialBookId, onDone, onCancel
             <div className="auth-error" style={{ marginBottom: 8 }}>{photoError}</div>
           )}
 
+          <p className="field-hint">
+            演じたいページを撮影して保存できます。写真は自動で圧縮されるので、無料の保存容量でも十分にストックできます。
+          </p>
+        </div>
+
+        <div className="field">
+          <label className="label">シーン本文・説明</label>
           <textarea
             className="textarea"
             value={form.description}
             onChange={(e) => set('description', e.target.value)}
-            placeholder="シーンの本文・描写（写真撮影で自動入力も可）"
+            placeholder="セリフや、演じられる箇所の書き起こし・メモ（任意）"
             style={{ minHeight: 100 }}
           />
-          <p className="field-hint">
-            写真は自動で圧縮して保存されます。文字起こしだけ残して写真を削除すると、保存容量をほぼ使いません。
-          </p>
         </div>
 
         <div className="field">

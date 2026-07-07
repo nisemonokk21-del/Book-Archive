@@ -339,27 +339,6 @@ body {
 .empty-icon { font-size: 40px; margin-bottom: 12px; opacity: 0.5; }
 .empty p { font-size: 14px; line-height: 1.6; }
 
-/* ---- AI feature ---- */
-.ai-box {
-  background: linear-gradient(135deg, var(--accent-light) 0%, #f0f8f4 100%);
-  border: 1px solid #c3ddd0;
-  border-radius: var(--radius);
-  padding: 16px;
-  margin-bottom: 20px;
-}
-
-.ai-box-title {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--accent);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  margin-bottom: 10px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
 /* ---- Form group ---- */
 .form { display: flex; flex-direction: column; gap: 18px; }
 

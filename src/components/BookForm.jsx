@@ -15,8 +15,7 @@ export default function BookForm({ user, book, onDone, onCancel }) {
     characters: normalizeCharacters(book?.characters),
   })
   const [saving, setSaving] = useState(false)
-  const [aiLoading, setAiLoading] = useState(false)
-  const [aiError, setAiError] = useState('')
+  const [error, setError] = useState('')
 
   const set = (key, val) => setForm((f) => ({ ...f, [key]: val }))
 
@@ -28,31 +27,6 @@ export default function BookForm({ user, book, onDone, onCancel }) {
 
   const removeChar = (index) => {
     set('characters', form.characters.filter((_, i) => i !== index))
-  }
-
-  const handleAiSummary = async () => {
-    if (!form.title) { setAiError('タイトルを入力してください'); return }
-    setAiError('')
-    setAiLoading(true)
-    try {
-      const res = await fetch('/api/ai-book-summary', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title: form.title, author: form.author }),
-      })
-      const data = await res.json()
-      if (!res.ok) throw new Error(data.error || 'AI処理に失敗しました')
-      const aiChars = normalizeCharacters(data.characters)
-      setForm((f) => ({
-        ...f,
-        synopsis: data.synopsis || f.synopsis,
-        characters: aiChars.length ? aiChars : f.characters,
-      }))
-    } catch (err) {
-      setAiError(err.message)
-    } finally {
-      setAiLoading(false)
-    }
   }
 
   const handleSubmit = async (e) => {
@@ -79,7 +53,7 @@ export default function BookForm({ user, book, onDone, onCancel }) {
       onDone()
     } catch (err) {
       console.error(err)
-      setAiError('保存に失敗しました。通信環境を確認してください。')
+      setError('保存に失敗しました。通信環境を確認してください。')
     } finally {
       setSaving(false)
     }
@@ -97,32 +71,8 @@ export default function BookForm({ user, book, onDone, onCancel }) {
         <div className="form-title" style={{ marginBottom: 0 }}>{isEdit ? '本を編集' : '本を追加'}</div>
       </div>
 
-      {!isEdit && (
-        <div className="ai-box" style={{ marginBottom: 24 }}>
-          <div className="ai-box-title">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="12" cy="12" r="10" /><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" /><line x1="12" y1="17" x2="12.01" y2="17" />
-            </svg>
-            AIまとめ機能
-          </div>
-          <p style={{ fontSize: 13, color: 'var(--muted)', marginBottom: 12, lineHeight: 1.6 }}>
-            タイトルと著者名を入力して「AIでまとめる」を押すと、あらすじと登場人物を自動生成します。
-          </p>
-          <button
-            type="button"
-            className="btn btn-secondary btn-sm"
-            onClick={handleAiSummary}
-            disabled={aiLoading}
-          >
-            {aiLoading
-              ? <><span className="spinner spinner-dark" />生成中...</>
-              : '✦ AIでまとめる'}
-          </button>
-        </div>
-      )}
-
-      {aiError && (
-        <div className="auth-error" style={{ marginBottom: 16 }}>{aiError}</div>
+      {error && (
+        <div className="auth-error" style={{ marginBottom: 16 }}>{error}</div>
       )}
 
       <form className="form" onSubmit={handleSubmit}>
