@@ -25,9 +25,12 @@ ${author ? `著者：${author}` : ''}
 以下のJSON形式で回答してください（マークダウンコードブロックなし）：
 {
   "synopsis": "200字程度のあらすじ",
-  "characters": ["登場人物1", "登場人物2", "登場人物3"]
+  "characters": [
+    { "name": "登場人物名", "note": "役柄・年齢・性格・他の人物との関係などを50字程度で" }
+  ]
 }
 
+登場人物は主要な人物を3〜6人挙げてください。
 実在の本でない場合や情報が不明な場合は、タイトルから想像した内容でも構いません。`
 
   try {
@@ -42,9 +45,16 @@ ${author ? `著者：${author}` : ''}
     if (!jsonMatch) throw new Error('JSONの解析に失敗しました')
 
     const result = JSON.parse(jsonMatch[0])
+    const characters = (Array.isArray(result.characters) ? result.characters : [])
+      .map((c) => {
+        if (typeof c === 'string') return { name: c, note: '' }
+        if (c && typeof c === 'object' && c.name) return { name: String(c.name), note: String(c.note || '') }
+        return null
+      })
+      .filter(Boolean)
     return res.status(200).json({
       synopsis: result.synopsis || '',
-      characters: Array.isArray(result.characters) ? result.characters : [],
+      characters,
     })
   } catch (err) {
     console.error('AI summary error:', err)
